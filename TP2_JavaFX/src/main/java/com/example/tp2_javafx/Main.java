@@ -16,7 +16,8 @@ public class Main extends Application {
     public static ObservableList list = root.getChildren();
     @Override
     public void start(Stage stage) throws IOException {
-        Grille.grille();
+        //Grille.jeu();
+        Grille.placementBateau();
         menu();
 
         Scene scene = new Scene(root, 800,400);
