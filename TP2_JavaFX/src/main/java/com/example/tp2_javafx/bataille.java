@@ -1,3 +1,5 @@
+package com.example.tp2_javafx;
+
 import java.util.Random;
 import java.util.Scanner;
 

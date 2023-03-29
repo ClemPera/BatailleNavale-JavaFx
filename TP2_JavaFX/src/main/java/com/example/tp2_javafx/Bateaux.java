@@ -1,12 +1,12 @@
 package com.example.tp2_javafx;
 
-import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.GridPane;
 
 public class Bateaux {
     public static void select(){
@@ -19,21 +19,20 @@ public class Bateaux {
         bateau1.setFitWidth(50);
         bateau1.setFitHeight(20);
 
-        bateau1.setOnDragDetected((MouseEvent event) -> {
-            System.out.println("Circle 1 drag detected");
-
-            Dragboard db = bateau1.startDragAndDrop(TransferMode.ANY);
-
-            ClipboardContent content = new ClipboardContent();
-            content.putString("1");
-            db.setContent(content);
-        });
-        bateau1.setOnMouseDragged((MouseEvent event) -> {
-            event.setDragDetect(true);
-        });
+        drag(bateau1);
         Main.list.add(bateau1);
     }
 
+    private static void drag(ImageView b) {
+        b.setOnDragDetected(e -> {
+            Dragboard db = b.startDragAndDrop(TransferMode.MOVE);
+            db.setDragView(b.snapshot(null, null));
+            ClipboardContent cc = new ClipboardContent();
+            cc.put(Grille.dragFormat, " ");
+            db.setContent(cc);
+            Grille.draggingView= b;
+        });
+    }
     public static void ajout(){
         Image b1= new Image(Main.class.getResourceAsStream("bateau2Cases.png"));
         Image b2= new Image(Main.class.getResourceAsStream("bateau3Cases.png"));

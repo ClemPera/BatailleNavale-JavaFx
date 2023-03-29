@@ -1,23 +1,24 @@
 package com.example.tp2_javafx;
 
-import com.almasb.fxgl.dev.DebugCameraScene;
-import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.geometry.HPos;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.DragEvent;
+import javafx.scene.input.DataFormat;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Grille {
+    static final DataFormat dragFormat = new DataFormat("MyButton");
+    static Button draggingButton;
+    static ImageView draggingView;
+
     public static GridPane grille = new GridPane();
     public static List<List<Label>> grilleList= new ArrayList<>();
     public static GridPane grille2 = new GridPane();
@@ -80,37 +81,47 @@ public class Grille {
 
         for (int n = 1; n <= 10; n++) {
             for (int i = 1; i <= 10; i++) {
-                Label lab = new Label("");
-                lab.setStyle("-fx-font: 14 arial");
-                lab.setMinSize(30,30);
+                StackPane sp = new StackPane();
 
-                lab.setOnDragOver(new EventHandler<DragEvent>() {
-                    public void handle(DragEvent event) {
-                        if (event.getGestureSource() != lab && event.getDragboard().hasString()) {
-                            event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-                        }
+                sp.setPrefWidth(30);
+                sp.setPrefHeight(30);
 
-                        event.consume();
-                    }
-                });
+                grid.add(sp, i, n);
 
-                int finalI = i;
-                int finalN = n;
-                lab.setOnDragDropped((DragEvent event) -> {
-                    Dragboard db = event.getDragboard();
-                    if (db.hasString()) {
-                        System.out.println("Dropped: " + db.getString() + finalI + " " + finalN);
-                        event.setDropCompleted(true);
-                    } else {
-                        event.setDropCompleted(false);
-                    }
-                    event.consume();
-                });
+                addDropHandling(sp);
 
-                grid.add(lab, i, n);
-                GridPane.setHalignment(lab, HPos.CENTER);
             }
         }
+    }
+
+    private static void addDropHandling(StackPane pane) {
+        pane.setOnDragOver(e -> {
+            Dragboard db = e.getDragboard();
+            if (db.hasContent(dragFormat) && draggingView!= null) {
+                e.acceptTransferModes(TransferMode.MOVE);
+
+            }
+        });
+
+        pane.setOnDragDropped(e -> {
+            Dragboard db = e.getDragboard();
+
+            if (db.hasContent(dragFormat)) {
+                Node node = (Node) e.getTarget();
+                ((Pane)draggingView.getParent()).getChildren().remove(draggingView);
+                pane.getChildren().add(draggingView);
+                e.setDropCompleted(true);
+
+                System.out.println(GridPane.getRowIndex(node));
+                System.out.println(GridPane.getColumnIndex(node));
+                System.out.println();
+                //posOk sur cette position et si ce n'est pas ok mettre un message d'erreur and retry
+                //Si c'est Ok mettre la position dans 2 tableaux avec la valeur des row et column?
+
+                draggingView = null;
+            }
+        });
+
     }
     public static void arrierePlanG1(){
         ImageView ap = new ImageView();
