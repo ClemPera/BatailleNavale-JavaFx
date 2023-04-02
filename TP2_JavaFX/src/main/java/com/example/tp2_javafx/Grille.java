@@ -2,7 +2,7 @@ package com.example.tp2_javafx;
 
 import javafx.geometry.HPos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -11,22 +11,63 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Grille {
     static final DataFormat dragFormat = new DataFormat("MyButton");
-    static Button draggingButton;
-    static ImageView draggingView;
+    public static Pane draggingPane;
+    public static Bateau bateau;
 
     public static GridPane grille = new GridPane();
-    public static List<List<Label>> grilleList= new ArrayList<>();
     public static GridPane grille2 = new GridPane();
-    public static List<List<Label>> grille2List = new ArrayList<>();
+    public static CheckBox horizontalCB = new CheckBox();
+
+    public static void drop(StackPane pane){
+        pane.setOnDragOver(e -> {
+            e.acceptTransferModes(TransferMode.MOVE);
+            e.consume();
+        });
+
+        pane.setOnDragDropped(e -> {
+            Dragboard db = e.getDragboard();
+
+            Node node = (Node) e.getTarget();
+            ((Pane)draggingPane.getParent()).getChildren().remove(draggingPane);
+            pane.getChildren().add(draggingPane);
+            e.setDropCompleted(true);
+
+            if(GridPane.getRowIndex(node) != null && GridPane.getColumnIndex(node) != null)
+                bateau.setPos(GridPane.getRowIndex(node), GridPane.getColumnIndex(node));
+
+            System.out.println(bateau.getX() + " " + bateau.getY());
+            System.out.println(bateau.getDir());
+            //posOk sur cette position et si ce n'est pas ok mettre un message d'erreur and retry
+            //Si c'est Ok mettre la position dans 2 tableaux avec la valeur des row et column?
+
+            draggingPane = null;
+
+            e.setDropCompleted(true);
+            e.consume();
+        });
+    }
     public static void placementBateau(){
+            /*
+        EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e)
+            {
+                if (horizontalCB.isSelected()){
+                    Bateaux.vertical();
+                } else{
+                    Bateaux.horizontal
+                }
+            }
+
+        };
+
+        horizontalCB.setOnAction(event);
+             */
+
         arrierePlanG1();
         creerG1();
-        Bateaux.select();
+        //Bateaux.select();
     }
     public static void jeu(){
         creerG1();
@@ -75,6 +116,7 @@ public class Grille {
         for (int i = 1; i <= 10; i++) {
             Label lab = new Label(String.valueOf(i));
             lab.setStyle("-fx-font-weight: bold");
+
             grid.add(lab, 0, i);
             GridPane.setHalignment(lab, HPos.CENTER);
         }
@@ -88,41 +130,11 @@ public class Grille {
 
                 grid.add(sp, i, n);
 
-                addDropHandling(sp);
-
+                drop(sp);
             }
         }
     }
 
-    private static void addDropHandling(StackPane pane) {
-        pane.setOnDragOver(e -> {
-            Dragboard db = e.getDragboard();
-            if (db.hasContent(dragFormat) && draggingView!= null) {
-                e.acceptTransferModes(TransferMode.MOVE);
-
-            }
-        });
-
-        pane.setOnDragDropped(e -> {
-            Dragboard db = e.getDragboard();
-
-            if (db.hasContent(dragFormat)) {
-                Node node = (Node) e.getTarget();
-                ((Pane)draggingView.getParent()).getChildren().remove(draggingView);
-                pane.getChildren().add(draggingView);
-                e.setDropCompleted(true);
-
-                System.out.println(GridPane.getRowIndex(node));
-                System.out.println(GridPane.getColumnIndex(node));
-                System.out.println();
-                //posOk sur cette position et si ce n'est pas ok mettre un message d'erreur and retry
-                //Si c'est Ok mettre la position dans 2 tableaux avec la valeur des row et column?
-
-                draggingView = null;
-            }
-        });
-
-    }
     public static void arrierePlanG1(){
         ImageView ap = new ImageView();
         Image arrierePlan = new Image(Main.class.getResourceAsStream("bg.jpg"));

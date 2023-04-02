@@ -15,7 +15,11 @@ import java.util.Scanner;
  */
 public class bataille { public static Random rand = new Random(); /** * Tire des entiers aléatoire entre a inclus et b exclu * @param a à partir de ce nombre * @param b à jusqu'à ce nombre b exclu * @return retourne un nombre entier aléatoire entre a et b */ public static int randRange(int a, int b){
         return rand.nextInt(b-a)+a;
-    }public static int[][] grilleOrdi = new int [10][10];public static int[][] grilleJeu = new int [10][10];/*** Vérifie si la position de placement du bateau est correct
+    }
+    public static int[][] grilleOrdi = new int [10][10];
+    public static int[][] grilleJeu = new int [10][10];
+
+    /*** Vérifie si la position de placement du bateau est correct
      *
      * @param grille une grille
      * @param ligne un numéro de ligne
@@ -397,6 +401,11 @@ public class bataille { public static Random rand = new Random(); /** * Tire des
         return intTab;
     }
 
+    public static void engagementJFX(){
+        boolean fin = false;
+        int[] ordiTab;
+        int[] joueurTab;
+    }
     /**
      * Fonction qui remplie les deux grilles et fait jouer à tour de rôle l'ordinateur et le joueur. Elle vérifie aussi s'il y a un vainqueur
      */

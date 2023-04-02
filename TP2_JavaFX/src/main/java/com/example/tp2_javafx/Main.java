@@ -6,19 +6,26 @@ import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class Main extends Application {
-    private static Pane root = new Pane();
+    public static Pane root = new Pane();
     public static ObservableList list = root.getChildren();
     @Override
     public void start(Stage stage) throws IOException {
-        //Grille.jeu();
+        //bataille.engagementJFX();
+
         Grille.placementBateau();
-        menu();
+
+        //Création bateau 1
+        Bateau B1 = new Bateau(5);
+
+
+        //menu();
 
         Scene scene = new Scene(root, 800,400);
         stage.setTitle("Hello!");
