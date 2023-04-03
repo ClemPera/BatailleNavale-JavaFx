@@ -11,19 +11,49 @@ import java.io.Serializable;
 public class Bateau {
     private int type;
     private int direction;
-    private int Xpos;
-    private int Ypos;
-    private Image img = new Image(Main.class.getResourceAsStream("bateau2Cases.png"));;
+    private int Xpos = 100;
+    private int Ypos = 100;
+    private Image img;
 
-    Bateau(int t){
-        Pane bPane = new Pane();
-        bPane.relocate(375,75);
+    Bateau(int t, int x, int y, Image img){
+
+        int offsetX = 0;
+        int offsetY = 0;
+        int imageSize = 0;
+
+        if(t == 5) {
+            offsetX = -12;
+            offsetY = 25;
+            imageSize = 53;
+
+        }else if (t == 4){
+            offsetX = -27;
+            offsetY = 40;
+            imageSize = 83;
+        }else if (t == 3){
+            offsetX = -27;
+            offsetY = 40;
+            imageSize = 83;
+        }else if (t == 2){
+            offsetX = -42;
+            offsetY = 55;
+            imageSize = 113;
+        }else if (t == 1){
+            offsetX = -55;
+            offsetY = 68;
+            imageSize = 140;
+        }
 
         type = t;
-        direction = 4;
+        direction = 2;
+
+        Pane bPane = new Pane();
+        bPane.relocate(375+x,75+y);
 
         ImageView iv = new ImageView(img);
         iv.relocate(5,6);
+        iv.setFitWidth(imageSize);
+        iv.setFitHeight(20);
 
         bPane.setOnDragDetected(event -> {
             Dragboard db = bPane.startDragAndDrop(TransferMode.MOVE);
@@ -47,17 +77,21 @@ public class Bateau {
         tourner.setFitWidth(20);
         tourner.setFitHeight(20);
 
+        int finalOffsetX = offsetX;
+        int finalOffsetY = offsetY;
         tournPane.setOnMouseClicked(event -> {
-            if(iv.getRotate() == 90)
-            {
-                iv.relocate(5,6);
-                iv.setRotate(0);
-                direction = 1;
+            if(iv.getRotate() == 0) {
+                if(bataille.posOk(bataille.grilleJeu,Xpos, Ypos,2,type)){
+                    iv.relocate(finalOffsetX, finalOffsetY);
+                    iv.setRotate(90);
+                    direction = 1;
+                }
             } else{
-                iv.setRotate(90);
-                iv.relocate(-3, 15);
-                direction = 2;
-                System.out.println(bataille.posOk(bataille.grilleJeu,Xpos-1, Ypos-1,direction,type));
+                if(bataille.posOk(bataille.grilleJeu,Xpos, Ypos,1,type)) {
+                    iv.relocate(5,6);
+                    iv.setRotate(0);
+                    direction = 2;
+                }
             }
             event.consume();
         });

@@ -114,13 +114,15 @@ public class bataille { public static Random rand = new Random(); /** * Tire des
             longueur = 2;
         }
 
+        System.out.println("l = " + ligne + " c = " + colonne);
         grille[ligne][colonne] = type;
 
         for (int i = 0; i < longueur; i++) {
-            if(direction == 1) { //Si c'est horizontal
+            if(direction == 2) { //Si c'est horizontal
                 grille[ligne][colonne + i] = type;
             }
             else {
+                System.out.println("l = " + ligne + " i = " + i);
                 grille[ligne + i][colonne] = type;
             }
         }
@@ -401,11 +403,6 @@ public class bataille { public static Random rand = new Random(); /** * Tire des
         return intTab;
     }
 
-    public static void engagementJFX(){
-        boolean fin = false;
-        int[] ordiTab;
-        int[] joueurTab;
-    }
     /**
      * Fonction qui remplie les deux grilles et fait jouer à tour de rôle l'ordinateur et le joueur. Elle vérifie aussi s'il y a un vainqueur
      */

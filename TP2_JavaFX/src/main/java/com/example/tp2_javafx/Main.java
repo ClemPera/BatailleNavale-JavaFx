@@ -22,8 +22,13 @@ public class Main extends Application {
         Grille.placementBateau();
 
         //Création bateau 1
-        Bateau B1 = new Bateau(5);
+        Bateau B1 = new Bateau(5, 0,0, new Image(Main.class.getResourceAsStream("classic.png")));
+        Bateau B2 = new Bateau(4, 0,30, new Image(Main.class.getResourceAsStream("classic.png")));
+        Bateau B3 = new Bateau(3, 0,60, new Image(Main.class.getResourceAsStream("classic.png")));
+        Bateau B4 = new Bateau(2, 0,90, new Image(Main.class.getResourceAsStream("classic.png")));
+        Bateau B5 = new Bateau(1, 0,120, new Image(Main.class.getResourceAsStream("classic.png")));
 
+        Grille.valider(B1,B2,B3,B4,B5);
 
         //menu();
 

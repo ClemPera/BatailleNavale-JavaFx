@@ -2,6 +2,8 @@ package com.example.tp2_javafx;
 
 import javafx.geometry.HPos;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -20,10 +22,42 @@ public class Grille {
     public static GridPane grille2 = new GridPane();
     public static CheckBox horizontalCB = new CheckBox();
 
+    public static void valider(Bateau B1, Bateau B2, Bateau B3, Bateau B4, Bateau B5){
+        Button btn = new Button();
+        btn.relocate(355,40);
+        btn.setText("Valider");
+
+        Main.list.add(btn);
+
+        btn.setOnAction(e ->{
+
+            if(B1.getX() == 100 || B2.getX() == 100 || B3.getX() == 100 || B4.getX() == 100 || B5.getX() == 100) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erreur");
+                alert.setHeaderText(null);
+                alert.setContentText("Vous n'avez pas placer tout les bateaux!!");
+                alert.showAndWait();
+            }
+            else{
+                bataille.ajoutBateau(bataille.grilleJeu, B1.getX(), B1.getY(), B1.getDir(), B1.getType());
+                bataille.ajoutBateau(bataille.grilleJeu, B2.getX(), B2.getY(), B2.getDir(), B2.getType());
+                bataille.ajoutBateau(bataille.grilleJeu, B3.getX(), B3.getY(), B3.getDir(), B3.getType());
+                bataille.ajoutBateau(bataille.grilleJeu, B4.getX(), B4.getY(), B4.getDir(), B4.getType());
+                bataille.ajoutBateau(bataille.grilleJeu, B5.getX(), B5.getY(), B5.getDir(), B5.getType());
+                System.out.println("yesss");
+            }
+
+        });
+    }
     public static void drop(StackPane pane){
         pane.setOnDragOver(e -> {
-            e.acceptTransferModes(TransferMode.MOVE);
-            e.consume();
+            Node node = (Node) e.getTarget();
+
+            if(GridPane.getRowIndex(node) != null && GridPane.getColumnIndex(node) != null)
+                if(bataille.posOk(bataille.grilleJeu,GridPane.getColumnIndex(node),GridPane.getRowIndex(node),bateau.getDir(),bateau.getType())) {
+                    e.acceptTransferModes(TransferMode.MOVE);
+                    e.consume();
+                }
         });
 
         pane.setOnDragDropped(e -> {
@@ -84,8 +118,8 @@ public class Grille {
         int columnSize = 30;
         int rowSize = 30;
 
-        grille.getColumnConstraints().addAll(new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize));
-        grille.getRowConstraints().addAll(new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize));
+        grille.getColumnConstraints().addAll(new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize));
+        grille.getRowConstraints().addAll(new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize));
 
         Main.list.add(grille);
     }
@@ -99,30 +133,14 @@ public class Grille {
         int columnSize = 30;
         int rowSize = 30;
 
-        grille2.getColumnConstraints().addAll(new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize));
-        grille2.getRowConstraints().addAll(new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize));
+        grille2.getColumnConstraints().addAll(new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize));
+        grille2.getRowConstraints().addAll(new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize));
 
         Main.list.add(grille2);
     }
     public static void remplir(GridPane grid) {
-        for (char i = 'A'; i <= 'J'; i++) {
-            Label lab = new Label(String.valueOf(i));
-            lab.setStyle("-fx-font-weight: bold");
-
-            grid.add(lab, i-64, 0);
-            GridPane.setHalignment(lab, HPos.CENTER);
-        }
-
-        for (int i = 1; i <= 10; i++) {
-            Label lab = new Label(String.valueOf(i));
-            lab.setStyle("-fx-font-weight: bold");
-
-            grid.add(lab, 0, i);
-            GridPane.setHalignment(lab, HPos.CENTER);
-        }
-
-        for (int n = 1; n <= 10; n++) {
-            for (int i = 1; i <= 10; i++) {
+        for (int n = 0; n < 10; n++) {
+            for (int i = 0; i < 10; i++) {
                 StackPane sp = new StackPane();
 
                 sp.setPrefWidth(30);
@@ -140,8 +158,8 @@ public class Grille {
         Image arrierePlan = new Image(Main.class.getResourceAsStream("bg.jpg"));
         ap.setImage(arrierePlan);
         ap.relocate(20,40);
-        ap.setFitWidth(330);
-        ap.setFitHeight(330);
+        ap.setFitWidth(300);
+        ap.setFitHeight(300);
 
         Main.list.add(ap);
     }
