@@ -22,8 +22,8 @@ public class bataille { public static Random rand = new Random(); /** * Tire des
     /*** Vérifie si la position de placement du bateau est correct
      *
      * @param grille une grille
-     * @param ligne un numéro de ligne
-     * @param colonne un numéro de colonne (entre 0 et 9)
+     * @param colonne un numéro de ligne
+     * @param col un numéro de colonne (entre 0 et 9)
      * @param direction un entier codant une direction (1 pour horizontal et 2 pour vertical)
      * @param type donnant le type du bateau
      *
@@ -63,6 +63,7 @@ public class bataille { public static Random rand = new Random(); /** * Tire des
                 }
             }
         }
+        System.out.println("veriflong = " + verifLong + " longueur = " + longueur);
 
         if(verifLong==longueur)
             return true;
@@ -114,15 +115,13 @@ public class bataille { public static Random rand = new Random(); /** * Tire des
             longueur = 2;
         }
 
-        System.out.println("l = " + ligne + " c = " + colonne);
         grille[ligne][colonne] = type;
 
         for (int i = 0; i < longueur; i++) {
-            if(direction == 2) { //Si c'est horizontal
+            if(direction == 1) { //Si c'est horizontal
                 grille[ligne][colonne + i] = type;
             }
             else {
-                System.out.println("l = " + ligne + " i = " + i);
                 grille[ligne + i][colonne] = type;
             }
         }

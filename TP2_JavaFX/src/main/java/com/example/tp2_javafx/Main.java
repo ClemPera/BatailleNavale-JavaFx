@@ -17,8 +17,6 @@ public class Main extends Application {
     public static ObservableList list = root.getChildren();
     @Override
     public void start(Stage stage) throws IOException {
-        //bataille.engagementJFX();
-
         Grille.placementBateau();
 
         //Création bateau 1
@@ -29,8 +27,6 @@ public class Main extends Application {
         Bateau B5 = new Bateau(1, 0,120, new Image(Main.class.getResourceAsStream("classic.png")));
 
         Grille.valider(B1,B2,B3,B4,B5);
-
-        //menu();
 
         Scene scene = new Scene(root, 800,400);
         stage.setTitle("Hello!");

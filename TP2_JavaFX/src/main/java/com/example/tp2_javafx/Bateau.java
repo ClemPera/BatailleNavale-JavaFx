@@ -13,10 +13,8 @@ public class Bateau {
     private int direction;
     private int Xpos = 100;
     private int Ypos = 100;
-    private Image img;
 
     Bateau(int t, int x, int y, Image img){
-
         int offsetX = 0;
         int offsetY = 0;
         int imageSize = 0;
@@ -25,7 +23,6 @@ public class Bateau {
             offsetX = -12;
             offsetY = 25;
             imageSize = 53;
-
         }else if (t == 4){
             offsetX = -27;
             offsetY = 40;
@@ -45,7 +42,7 @@ public class Bateau {
         }
 
         type = t;
-        direction = 2;
+        direction = 1;
 
         Pane bPane = new Pane();
         bPane.relocate(375+x,75+y);
@@ -84,13 +81,13 @@ public class Bateau {
                 if(bataille.posOk(bataille.grilleJeu,Xpos, Ypos,2,type)){
                     iv.relocate(finalOffsetX, finalOffsetY);
                     iv.setRotate(90);
-                    direction = 1;
+                    direction = 2;
                 }
             } else{
                 if(bataille.posOk(bataille.grilleJeu,Xpos, Ypos,1,type)) {
                     iv.relocate(5,6);
                     iv.setRotate(0);
-                    direction = 2;
+                    direction = 1;
                 }
             }
             event.consume();
