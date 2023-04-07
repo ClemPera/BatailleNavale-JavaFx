@@ -3,7 +3,6 @@ package com.example.tp2_javafx;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DataFormat;
@@ -11,21 +10,19 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 
-import java.nio.file.spi.FileSystemProvider;
-
 public class Grille {
     static final DataFormat dragFormat = new DataFormat("MyButton");
     public static Pane draggingPane;
     public static Bateau bateau;
     public static GridPane grille = new GridPane();
     public static GridPane grille2 = new GridPane();
+    public static Button btn = new Button();
 
-    public static void valider(Bateau B1, Bateau B2, Bateau B3, Bateau B4, Bateau B5){
-        Button btn = new Button();
+    public static void valider(){
         btn.relocate(355,40);
         btn.setText("Valider");
 
-        Main.list.add(btn);
+        Stages.scene1List.add(btn);
 
         btn.setOnAction(e ->{
             boolean ok = true;
@@ -34,57 +31,28 @@ public class Grille {
             alert.setTitle("Erreur");
             alert.setHeaderText(null);
             alert.setContentText("Il y a une erreur dans le placement des bateaux");
-            if(B1.getX() == 100 || B2.getX() == 100 || B3.getX() == 100 || B4.getX() == 100 || B5.getX() == 100) {
-                alert.showAndWait();
-                System.out.println("Nooo");
-            }
-            else{
-                int[][] grilleTest = new int [10][10];
 
-                if(bataille.posOk(grilleTest,B1.getX(), B1.getY(),B1.getDir(),B1.getType()))
-                    bataille.ajoutBateau(grilleTest, B1.getX(), B1.getY(), B1.getDir(), B1.getType());
+            for (Bateau bateau : Stages.bateaux) {
+                int[][] grilleTest = new int[10][10];
+
+                if (bateau.getX() != 100 && bataille.posOk(grilleTest, bateau.getX(), bateau.getY(), bateau.getDir(), bateau.getType()))
+                    bataille.ajoutBateau(grilleTest, bateau.getX(), bateau.getY(), bateau.getDir(), bateau.getType());
                 else {
                     System.out.println("1");
                     ok = false;
                 }
-                if(bataille.posOk(grilleTest,B2.getX(), B2.getY(),B2.getDir(),B2.getType()))
-                    bataille.ajoutBateau(grilleTest, B2.getX(), B2.getY(), B2.getDir(), B2.getType());
-                else {
-                    System.out.println("2");
-                    ok = false;
-                }
-                if(bataille.posOk(grilleTest,B3.getX(), B3.getY(),B3.getDir(),B3.getType()))
-                    bataille.ajoutBateau(grilleTest, B3.getX(), B3.getY(), B3.getDir(), B3.getType());
-                else {
-                    System.out.println("3");
-                    ok = false;
-                }
-                if(bataille.posOk(grilleTest,B4.getX(), B4.getY(),B4.getDir(),B4.getType()))
-                    bataille.ajoutBateau(grilleTest, B4.getX(), B4.getY(), B4.getDir(), B4.getType());
-                else {
-                    System.out.println("4");
-                    ok = false;
-                }
-                if(bataille.posOk(grilleTest,B5.getX(), B5.getY(),B5.getDir(),B5.getType()))
-                    bataille.ajoutBateau(grilleTest, B5.getX(), B5.getY(), B5.getDir(), B5.getType());
-                else {
-                    System.out.println("5");
-                    ok = false;
-                }
-
-
-                if(ok) {
-                    bataille.ajoutBateau(bataille.grilleJeu, B1.getX(), B1.getY(), B1.getDir(), B1.getType());
-                    bataille.ajoutBateau(bataille.grilleJeu, B2.getX(), B2.getY(), B2.getDir(), B2.getType());
-                    bataille.ajoutBateau(bataille.grilleJeu, B3.getX(), B3.getY(), B3.getDir(), B3.getType());
-                    bataille.ajoutBateau(bataille.grilleJeu, B4.getX(), B4.getY(), B4.getDir(), B4.getType());
-                    bataille.ajoutBateau(bataille.grilleJeu, B5.getX(), B5.getY(), B5.getDir(), B5.getType());
-                    System.out.println("yesss");
-                }
-                else{
-                    alert.showAndWait();
             }
-        }
+
+            if(ok) {
+                for (Bateau bateau : Stages.bateaux) {
+                    bataille.ajoutBateau(bataille.grilleJeu, bateau.getX(), bateau.getY(), bateau.getDir(), bateau.getType());
+                }
+                System.out.println("yesss");
+                Stages.stage2Init();
+            }
+            else{
+                alert.showAndWait();
+            }
         });
     }
     public static void drop(StackPane pane){
@@ -123,7 +91,7 @@ public class Grille {
         creerG1();
     }
     public static void jeu(){
-        creerG1();
+        arrierePlanG2();
         creerG2();
     }
     public static void creerG1() {
@@ -140,7 +108,7 @@ public class Grille {
         grille.getColumnConstraints().addAll(new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize));
         grille.getRowConstraints().addAll(new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize));
 
-        Main.list.add(grille);
+        Stages.scene1List.add(grille);
     }
     public static void creerG2() {
         arrierePlanG2();
@@ -155,7 +123,7 @@ public class Grille {
         grille2.getColumnConstraints().addAll(new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize), new ColumnConstraints(columnSize,columnSize,columnSize));
         grille2.getRowConstraints().addAll(new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize));
 
-        Main.list.add(grille2);
+        Stages.scene1List.add(grille2);
     }
     public static void remplir(GridPane grid) {
         for (int n = 0; n < 10; n++) {
@@ -180,7 +148,7 @@ public class Grille {
         ap.setFitWidth(300);
         ap.setFitHeight(300);
 
-        Main.list.add(ap);
+        Stages.scene1List.add(ap);
     }
 
     public static void arrierePlanG2(){
@@ -188,9 +156,9 @@ public class Grille {
         ImageView ap = new ImageView();
         ap.setImage(arrierePlan);
         ap.relocate(400,40);
-        ap.setFitWidth(330);
-        ap.setFitHeight(330);
+        ap.setFitWidth(300);
+        ap.setFitHeight(300);
 
-        Main.list.add(ap);
+        Stages.scene1List.add(ap);
     }
 }

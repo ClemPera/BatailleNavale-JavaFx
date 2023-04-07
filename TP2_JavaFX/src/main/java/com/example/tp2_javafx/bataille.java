@@ -63,7 +63,6 @@ public class bataille { public static Random rand = new Random(); /** * Tire des
                 }
             }
         }
-        System.out.println("veriflong = " + verifLong + " longueur = " + longueur);
 
         if(verifLong==longueur)
             return true;
