@@ -90,6 +90,23 @@ public class bataille { public static Random rand = new Random(); /** * Tire des
         }
     }
 
+    public static int[] initGrilleOrdi2(int type) {
+        boolean ok = false;
+        int ligne = 0, colonne = 0, numDirection = 0;
+
+        while (!ok) {
+            ligne = randRange(0, 10);
+            colonne = randRange(0, 10);
+            numDirection = randRange(1, 3); //1 pour horizontal et 2 pour vertical
+
+            ok = posOk(grilleOrdi, ligne, colonne, numDirection, type);
+        }
+
+        ajoutBateau(grilleOrdi, ligne, colonne, numDirection, type);
+
+        return new int[]{ligne, colonne, numDirection, type};
+    }
+
     /**
      * Procédure pour ajouter un bateau à la grille spécifié
      *
