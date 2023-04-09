@@ -10,6 +10,7 @@ public class Bateau {
     private int direction;
     private int Xpos = 100;
     private int Ypos = 100;
+
     public Pane tournPane = new Pane();
     public Pane bPane = new Pane();
     public ImageView tournerIv = new ImageView();
@@ -18,7 +19,16 @@ public class Bateau {
     public int offsetX = 0;
     public int offsetY = 0;
     public int imageSize = 0;
-    Bateau(int t, int x, int y, Image img, boolean estEnemy){
+
+    /**
+     * Constructeur du bateau
+     * @param t Type du bateau
+     * @param x Position X du bateau
+     * @param y Position Y du bateau
+     * @param img Image du bateau
+     */
+
+    Bateau(int t, int x, int y, Image img){
 
         if (t == 5) {
             offsetX = -12;
@@ -55,13 +65,11 @@ public class Bateau {
 
 
         bPane.getChildren().add(iv);
-
-        if (!estEnemy) {
-            drag();
-            tournerEvent();
-        }
-
     }
+
+    /**
+     * Active l'évènement drag and drop sur le bateau
+     */
     public void drag(){
         bPane.setOnDragDetected(event -> {
             Dragboard db = bPane.startDragAndDrop(TransferMode.MOVE);
@@ -76,6 +84,10 @@ public class Bateau {
             event.consume();
         });
     }
+
+    /**
+     * Active l'évènement de rotation du bateau
+     */
 
     public void tournerEvent() {
         Image tourn = new Image(Main.class.getResourceAsStream("rotate.png"));
@@ -93,6 +105,9 @@ public class Bateau {
         bPane.getChildren().add(tournPane);
     }
 
+    /**
+     * Tourne le bateau
+     */
     public void tourner(){
         if (iv.getRotate() == 0) {
             if (bataille.posOk(bataille.grilleJeu, Xpos, Ypos, 2, type)) {
@@ -104,119 +119,72 @@ public class Bateau {
             }
         }
     }
+
+    /**
+     * Tourne le bateau en vertical
+     */
     public void tournerVer(){
         iv.relocate(offsetX, offsetY);
         iv.setRotate(90);
         direction = 2;
     }
+
+    /**
+     * Tourne le bateau à l'horizontal
+     */
     public void tournerHor(){
         iv.relocate(5, 6);
         iv.setRotate(0);
         direction = 1;
     }
-    /*
-    Bateau(int t, int x, int y, Image img){
-        int offsetX = 0;
-        int offsetY = 0;
-        int imageSize = 0;
 
-        if (t == 5) {
-            offsetX = -12;
-            offsetY = 25;
-            imageSize = 53;
-        } else if (t == 4) {
-            offsetX = -27;
-            offsetY = 40;
-            imageSize = 83;
-        } else if (t == 3) {
-            offsetX = -27;
-            offsetY = 40;
-            imageSize = 83;
-        } else if (t == 2) {
-            offsetX = -42;
-            offsetY = 55;
-            imageSize = 113;
-        } else if (t == 1) {
-            offsetX = -55;
-            offsetY = 68;
-            imageSize = 140;
-        }
-
-        type = t;
-        direction = 1;
-
-        bPane.relocate(375 + x, 75 + y);
-
-        ImageView iv = new ImageView(img);
-        iv.relocate(5, 6);
-        iv.setFitWidth(imageSize);
-        iv.setFitHeight(20);
-
-        bPane.setOnDragDetected(event -> {
-            Dragboard db = bPane.startDragAndDrop(TransferMode.MOVE);
-            db.setDragView(bPane.snapshot(null, null));
-            ClipboardContent content = new ClipboardContent();
-
-            content.put(Grille.dragFormat, " ");
-            db.setContent(content);
-
-            Grille.bateau = this;
-            Grille.draggingPane = bPane;
-            event.consume();
-        });
-        bPane.getChildren().add(iv);
-
-        Image tourn = new Image(Main.class.getResourceAsStream("rotate.png"));
-        tourner.setImage(tourn);
-        tournPane.relocate(-3, -3);
-        tourner.setFitWidth(20);
-        tourner.setFitHeight(20);
-
-        int finalOffsetX = offsetX;
-        int finalOffsetY = offsetY;
-        tournPane.setOnMouseClicked(event -> {
-            if (iv.getRotate() == 0) {
-                if (bataille.posOk(bataille.grilleJeu, Xpos, Ypos, 2, type)) {
-                    iv.relocate(finalOffsetX, finalOffsetY);
-                    iv.setRotate(90);
-                    direction = 2;
-                }
-            } else {
-                if (bataille.posOk(bataille.grilleJeu, Xpos, Ypos, 1, type)) {
-                    iv.relocate(5, 6);
-                    iv.setRotate(0);
-                    direction = 1;
-                }
-            }
-            event.consume();
-        });
-
-        tournPane.getChildren().add(tourner);
-        bPane.getChildren().add(tournPane);
-        Stages.scene1List.add(bPane);
-    }
+    /**
+     * Retourne le type du bateau
+     * @return Type du bateau
      */
 
     public int getType(){
         return type;
     }
 
+    /**
+     * Retourne la direction du bateau
+     * @return Direction du bateau
+     */
     public int getDir(){
         return direction;
     }
 
+    /**
+     * Retourne la position X du bateau
+     * @return Position X du bateau
+     */
     public int getX(){
         return Xpos;
     }
 
+    /**
+     * Retourne la position Y du bateau
+     * @return Position Y du bateau
+     */
     public int getY(){
         return Ypos;
     }
 
+    /**
+     * Définit la position du bateau
+     * @param x Position X du bateau
+     * @param y Position Y du bateau
+     */
     public void setPos(int x, int y){
         Xpos = x;
         Ypos = y;
     }
+
+    /**
+     * Définit la direction du bateau
+     * @param d Direction du bateau
+     */
     public void setDir(int d){
         direction = d;
     }

@@ -13,7 +13,8 @@ import java.util.Scanner;
  * lignes sont numérotées de 1 à 10. Sur cette grille sont placés 5 bateaux en horizontal ou en
  * vertical. Le but de chaque joueur est de couler tous les bateaux de l’autre joueur
  */
-public class bataille { public static Random rand = new Random(); /** * Tire des entiers aléatoire entre a inclus et b exclu * @param a à partir de ce nombre * @param b à jusqu'à ce nombre b exclu * @return retourne un nombre entier aléatoire entre a et b */ public static int randRange(int a, int b){
+public class bataille {
+    public static Random rand = new Random(); /** * Tire des entiers aléatoire entre a inclus et b exclu * @param a à partir de ce nombre * @param b à jusqu'à ce nombre b exclu * @return retourne un nombre entier aléatoire entre a et b */ public static int randRange(int a, int b){
         return rand.nextInt(b-a)+a;
     }
     public static int[][] grilleOrdi = new int [10][10];
@@ -22,8 +23,8 @@ public class bataille { public static Random rand = new Random(); /** * Tire des
     /*** Vérifie si la position de placement du bateau est correct
      *
      * @param grille une grille
-     * @param colonne un numéro de ligne
-     * @param col un numéro de colonne (entre 0 et 9)
+     * @param ligne un numéro de ligne
+     * @param colonne un numéro de colonne (entre 0 et 9)
      * @param direction un entier codant une direction (1 pour horizontal et 2 pour vertical)
      * @param type donnant le type du bateau
      *
@@ -71,26 +72,9 @@ public class bataille { public static Random rand = new Random(); /** * Tire des
     }
 
     /**
-     * La procédure va placer au hasard les 5 bateaux sur la grille "grilleOrdi"
+     * La procédure va placer au hasard un bateau sur la grille "grilleOrdi"
      */
-    public static void initGrilleOrdi() {
-        boolean ok = false;
-        int ligne = 0, colonne = 0, numDirection = 0;
-        for (int type = 1; type <= 5; type++)
-        {
-            while (!ok) {
-                ligne = randRange(0, 10);
-                colonne = randRange(0, 10);
-                numDirection = randRange(1, 3); //1 pour horizontal et 2 pour vertical
-
-                ok = posOk(grilleOrdi, ligne, colonne, numDirection, type);
-            }
-            ajoutBateau(grilleOrdi, ligne, colonne, numDirection, type);
-            ok=false;
-        }
-    }
-
-    public static int[] initGrilleOrdi2(int type) {
+    public static int[] initGrilleOrdi(int type) {
         boolean ok = false;
         int ligne = 0, colonne = 0, numDirection = 0;
 
@@ -421,6 +405,7 @@ public class bataille { public static Random rand = new Random(); /** * Tire des
     /**
      * Fonction qui remplie les deux grilles et fait jouer à tour de rôle l'ordinateur et le joueur. Elle vérifie aussi s'il y a un vainqueur
      */
+    /*
     public static void engagement(){
         boolean fin = false;
         int[] ordiTab;
@@ -470,10 +455,8 @@ public class bataille { public static Random rand = new Random(); /** * Tire des
         }
     }
 
+    */
     /**
      * Fonction principale
      */
-    public static void main(String[] args) {
-        engagement();
-    }
 }

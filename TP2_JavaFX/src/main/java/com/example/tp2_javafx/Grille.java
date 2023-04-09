@@ -18,7 +18,10 @@ public class Grille {
     public static GridPane grille2 = new GridPane();
     public static Button btn = new Button();
 
-    public static void valider(){
+    /**
+     * Valide le placement des bateaux avec un bouton
+     */
+    public static void validerPlacement(){
         btn.relocate(355,40);
         btn.setText("Valider");
 
@@ -55,6 +58,11 @@ public class Grille {
             }
         });
     }
+
+    /**
+     * Active l'évènement de pose du bateau sur la grille
+     * @param pane Pane sur laquelle on pose le bateau
+     */
     public static void drop(StackPane pane){
         pane.setOnDragOver(e -> {
             Node node = (Node) e.getTarget();
@@ -83,15 +91,12 @@ public class Grille {
             e.consume();
         });
     }
-    public static void placementBateau(){
-        arrierePlanG1();
-        creerG1();
-    }
-    public static void jeu(){
-        arrierePlanG2();
-        creerG2();
-    }
+
+    /**
+     * Création de la grille du joueur
+     */
     public static void creerG1() {
+        arrierePlanG1();
         remplir(grille);
 
         grille.setGridLinesVisible(true);
@@ -105,6 +110,10 @@ public class Grille {
 
         Stages.scene1List.add(grille);
     }
+
+    /**
+     * Création de la grille de l'adversaire
+     */
     public static void creerG2() {
         arrierePlanG2();
         remplirEnemy(grille2);
@@ -120,6 +129,11 @@ public class Grille {
 
         Stages.scene1List.add(grille2);
     }
+
+    /**
+     * Remplissage de la grille du joueur
+     * @param grid Grille à remplir
+     */
     public static void remplir(GridPane grid) {
         for (int n = 0; n < 10; n++) {
             for (int i = 0; i < 10; i++) {
@@ -134,13 +148,18 @@ public class Grille {
             }
         }
     }
+
+    /**
+     * Remplissage de la grille de l'adversaire
+     * @param grid Grille à remplir
+     */
     public static void remplirEnemy(GridPane grid){
         int[][] tot = {
-                bataille.initGrilleOrdi2(5),
-                bataille.initGrilleOrdi2(4),
-                bataille.initGrilleOrdi2(3),
-                bataille.initGrilleOrdi2(2),
-                bataille.initGrilleOrdi2(1)};
+                bataille.initGrilleOrdi(5),
+                bataille.initGrilleOrdi(4),
+                bataille.initGrilleOrdi(3),
+                bataille.initGrilleOrdi(2),
+                bataille.initGrilleOrdi(1)};
 
         for (int n = 0; n < 10; n++) {
             for (int i = 0; i < 10; i++) {
@@ -154,21 +173,21 @@ public class Grille {
                 for(int j = 0; j < 5; j++)
                 {
                     if (tot[j][0] == n && tot[j][1] == i) {
-                        System.out.println("Bateau " + j + " : " + tot[j][0] + " " + tot[j][1] + " " + tot[j][2] + " " + tot[j][3] + " " + Stages.bateauxEnemy[j].getType());
                         Stages.bateauxEnemy[j].setPos(GridPane.getRowIndex(sp), GridPane.getColumnIndex(sp));
 
-                        if (tot[j][2] == 2) {
+                        if (tot[j][2] == 2)
                             Stages.bateauxEnemy[j].tournerVer();
-                            System.out.println("pass : " + Stages.bateauxEnemy[j].getDir());
-                        }
 
                         sp.getChildren().add(Stages.bateauxEnemy[j].bPane);
-                        bataille.AfficherGrille(bataille.grilleOrdi);
                     }
                 }
             }
         }
     }
+
+    /**
+     * Création de l'arrière plan de la grille du joueur
+     */
     public static void arrierePlanG1(){
         ImageView ap = new ImageView();
         Image arrierePlan = new Image(Main.class.getResourceAsStream("bg.jpg"));
@@ -180,6 +199,9 @@ public class Grille {
         Stages.scene1List.add(ap);
     }
 
+    /**
+     * Création de l'arrière plan de la grille de l'adversaire
+     */
     public static void arrierePlanG2(){
         Image arrierePlan = new Image(Main.class.getResourceAsStream("bg.jpg"));
         ImageView ap = new ImageView();
