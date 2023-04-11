@@ -16,8 +16,7 @@ public class Bateau {
     public ImageView tournerIv = new ImageView();
     public ImageView iv = new ImageView();
 
-    public int offsetX = 0;
-    public int offsetY = 0;
+    public int offset = 0;
     public int imageSize = 0;
 
     /**
@@ -31,24 +30,19 @@ public class Bateau {
     Bateau(int t, int x, int y, Image img){
 
         if (t == 5) {
-            offsetX = -12;
-            offsetY = 25;
+            offset = -16;
             imageSize = 53;
         } else if (t == 4) {
-            offsetX = -27;
-            offsetY = 40;
+            offset = -31;
             imageSize = 83;
         } else if (t == 3) {
-            offsetX = -27;
-            offsetY = 40;
+            offset = -31;
             imageSize = 83;
         } else if (t == 2) {
-            offsetX = -42;
-            offsetY = 55;
+            offset = -46;
             imageSize = 113;
         } else if (t == 1) {
-            offsetX = -55;
-            offsetY = 68;
+            offset = -60;
             imageSize = 140;
         }
 
@@ -56,13 +50,16 @@ public class Bateau {
         direction = 1;
 
         bPane.relocate(x, y);
+        bPane.setMaxWidth(20);
+        bPane.setMaxHeight(20);
 
         iv.setImage(img);
-        iv.relocate(5, 6);
+        iv.relocate(0, 0);
         iv.setRotate(0);
         iv.setFitWidth(imageSize);
         iv.setFitHeight(20);
 
+        //bPane.setStyle("-fx-background-color: red;"); //DEBUG
 
         bPane.getChildren().add(iv);
     }
@@ -124,7 +121,7 @@ public class Bateau {
      * Tourne le bateau en vertical
      */
     public void tournerVer(){
-        iv.relocate(offsetX, offsetY);
+        iv.relocate(offset, -offset);
         iv.setRotate(90);
         direction = 2;
     }
@@ -133,7 +130,7 @@ public class Bateau {
      * Tourne le bateau à l'horizontal
      */
     public void tournerHor(){
-        iv.relocate(5, 6);
+        iv.relocate(0, 0);
         iv.setRotate(0);
         direction = 1;
     }

@@ -1,5 +1,6 @@
 package com.example.tp2_javafx;
 
+import com.almasb.fxgl.input.Input;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -7,8 +8,16 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
+import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+
+import java.io.InputStream;
+import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 public class Grille {
     static final DataFormat dragFormat = new DataFormat("MyButton");
@@ -50,7 +59,6 @@ public class Grille {
                 for (Bateau bateau : Stages.bateaux) {
                     bataille.ajoutBateau(bataille.grilleJeu, bateau.getX(), bateau.getY(), bateau.getDir(), bateau.getType());
                 }
-                System.out.println("yesss");
                 Stages.stage2Init();
             }
             else{
@@ -178,15 +186,93 @@ public class Grille {
                         if (tot[j][2] == 2)
                             Stages.bateauxEnemy[j].tournerVer();
 
-                        sp.getChildren().add(Stages.bateauxEnemy[j].bPane);
+                        //sp.getChildren().add(Stages.bateauxEnemy[j].bPane);
                     }
                 }
+
+                clickEvent();
             }
         }
     }
 
+    public static void clickEvent() {
+        grille2.setOnMouseClicked(event -> {
+            if (event.getButton() == MouseButton.PRIMARY) {
+                try {
+                    StackPane sp = (StackPane) event.getTarget();
+                    System.out.println(GridPane.getRowIndex(sp) + " " + GridPane.getColumnIndex(sp));
+
+                    Image feu = new Image(Main.class.getResourceAsStream("fire.gif"));
+                    ImageView fIv = new ImageView(feu);
+                    fIv.setFitWidth(30);
+                    fIv.setFitHeight(30);
+
+                    Image eau = new Image(Main.class.getResourceAsStream("water.gif"));
+                    ImageView eIv= new ImageView(eau);
+                    eIv.setFitWidth(30);
+                    eIv.setFitHeight(30);
+
+                    AudioClip explosion = new AudioClip(Main.class.getResource("explosion.mp3").toString());
+                    AudioClip explosionFinale = new AudioClip(Main.class.getResource("explosionFinale.mp3").toString());
+                    AudioClip couler = new AudioClip(Main.class.getResource("bubble.mp3").toString());
+
+                    int move = bataille.mouvement(bataille.grilleOrdi, GridPane.getRowIndex(sp), GridPane.getColumnIndex(sp));
+                    if (move == 8) {
+                        System.out.println("Touché");
+                        //Animation rouge sur la case / Marqueur X
+
+                        fIv.relocate(400 + GridPane.getColumnIndex(sp) * 30, 40 + GridPane.getRowIndex(sp) * 30);
+                        Stages.scene1List.add(fIv);
+
+                        //Effet sonore feu
+                        explosion.play();
+                    } else if (move == 9) {
+                        System.out.println("A l'eau");
+                        //Animation Bleue avec bubble sur la case / Marqueur O
+
+                        eIv.relocate(400 + GridPane.getColumnIndex(sp) * 30, 40 + GridPane.getRowIndex(sp) * 30);
+                        Stages.scene1List.add(eIv);
+
+                        //Effet sonore bubble
+                        couler.play();
+                    } else {
+                        System.out.println("Le bateau " + move + " a été coulé!");
+                        //Effet sonore explosion diff de touché
+                        explosionFinale.play();
+
+                        fIv.relocate(400 + GridPane.getColumnIndex(sp) * 30, 40 + GridPane.getRowIndex(sp) * 30);
+                        Stages.scene1List.add(fIv);
+
+                        if (move == 1) {
+                            Stages.bateauxEnemy[4].bPane.relocate(400 + Stages.bateauxEnemy[4].getY() * 30+5, 40 + Stages.bateauxEnemy[4].getX() * 30+5);
+                            Stages.scene1List.add(Stages.bateauxEnemy[4].bPane);
+                        } else if (move == 2) {
+                            Stages.bateauxEnemy[3].bPane.relocate(400 + Stages.bateauxEnemy[3].getY() * 30+5, 40 + Stages.bateauxEnemy[3].getX() * 30+5);
+                            Stages.scene1List.add(Stages.bateauxEnemy[3].bPane);
+                        } else if (move == 3) {
+                            Stages.bateauxEnemy[2].bPane.relocate(400 + Stages.bateauxEnemy[2].getY() * 30+5, 40 + Stages.bateauxEnemy[2].getX() * 30+5);
+                            Stages.scene1List.add(Stages.bateauxEnemy[2].bPane);
+                        } else if (move == 4) {
+                            Stages.bateauxEnemy[1].bPane.relocate(400 + Stages.bateauxEnemy[1].getY() * 30+5, 40 + Stages.bateauxEnemy[1].getX() * 30+5);
+                            Stages.scene1List.add(Stages.bateauxEnemy[1].bPane);
+                        } else if (move == 5) {
+                            Stages.bateauxEnemy[0].bPane.relocate(400 + Stages.bateauxEnemy[0].getY() * 30+5, 40 + Stages.bateauxEnemy[0].getX() * 30+5);
+                            Stages.scene1List.add(Stages.bateauxEnemy[0].bPane);
+                            //sp.getChildren().add(Stages.bateauxEnemy[0].bPane);
+                        }
+
+                        bataille.AfficherGrille(bataille.grilleOrdi);
+                    }
+                } catch (ClassCastException e) {
+
+                    System.out.println("Clic sur la grille");
+                }
+            }
+        });
+    }
+
     /**
-     * Création de l'arrière plan de la grille du joueur
+     * Création de l'arrière-plan de la grille du joueur
      */
     public static void arrierePlanG1(){
         ImageView ap = new ImageView();
@@ -200,7 +286,7 @@ public class Grille {
     }
 
     /**
-     * Création de l'arrière plan de la grille de l'adversaire
+     * Création de l'arrière-plan de la grille de l'adversaire
      */
     public static void arrierePlanG2(){
         Image arrierePlan = new Image(Main.class.getResourceAsStream("bg.jpg"));

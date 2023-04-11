@@ -59,5 +59,7 @@ public class Stages {
         Stages.scene1List.remove(Grille.btn);
 
         Grille.creerG2();
+
+
     }
 }

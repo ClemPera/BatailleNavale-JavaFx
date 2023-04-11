@@ -313,7 +313,7 @@ public class bataille {
      * @param ligne la ligne
      * @param colonne la colonne
      */
-    public static void mouvement(int [][]grille, int ligne, int colonne){
+    public static int mouvement(int [][]grille, int ligne, int colonne){
         int numBateau;
 
         if(grille[ligne][colonne] != 0 && grille[ligne][colonne] != 6){
@@ -321,13 +321,16 @@ public class bataille {
             grille[ligne][colonne] = 6;
 
             if(couler(grille, numBateau)){
-                System.out.print("Le bateau " + numBateau + " a été coulé!");
+                //System.out.print("Le bateau " + numBateau + " a été coulé!");
+                return numBateau;
             } else{
-                System.out.print("Touché");
+                //System.out.print("Touché");
+                return 8;
             }
         }
         else{
-            System.out.print("A l'eau");
+            //System.out.print("A l'eau");
+            return 9;
         }
     }
 
