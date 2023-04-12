@@ -19,7 +19,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         stg = stage;
-        Stages.stage1Init();
+        Stages.stagePlacementBateau();
     }
 
     public static void main(String[] args) {

@@ -1,6 +1,5 @@
 package com.example.tp2_javafx;
 
-import com.almasb.fxgl.input.Input;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -12,12 +11,6 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 import javafx.scene.media.AudioClip;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-
-import java.io.InputStream;
-import java.net.URL;
-import java.util.concurrent.TimeUnit;
 
 public class Grille {
     static final DataFormat dragFormat = new DataFormat("MyButton");
@@ -59,7 +52,7 @@ public class Grille {
                 for (Bateau bateau : Stages.bateaux) {
                     bataille.ajoutBateau(bataille.grilleJeu, bateau.getX(), bateau.getY(), bateau.getDir(), bateau.getType());
                 }
-                Stages.stage2Init();
+                Stages.stageJeu();
             }
             else{
                 alert.showAndWait();
@@ -185,90 +178,133 @@ public class Grille {
 
                         if (tot[j][2] == 2)
                             Stages.bateauxEnemy[j].tournerVer();
-
-                        //sp.getChildren().add(Stages.bateauxEnemy[j].bPane);
                     }
                 }
-
-                clickEvent();
             }
         }
     }
 
+    /**
+     * Gestion des évènements de clic sur la grille de l'adversaire
+     * @throws ClassCastException Exception quand on clique sur la grille et pas sur la case
+     */
     public static void clickEvent() {
         grille2.setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.PRIMARY) {
                 try {
                     StackPane sp = (StackPane) event.getTarget();
-                    System.out.println(GridPane.getRowIndex(sp) + " " + GridPane.getColumnIndex(sp));
 
-                    Image feu = new Image(Main.class.getResourceAsStream("fire.gif"));
-                    ImageView fIv = new ImageView(feu);
-                    fIv.setFitWidth(30);
-                    fIv.setFitHeight(30);
-
-                    Image eau = new Image(Main.class.getResourceAsStream("water.gif"));
-                    ImageView eIv= new ImageView(eau);
-                    eIv.setFitWidth(30);
-                    eIv.setFitHeight(30);
-
-                    AudioClip explosion = new AudioClip(Main.class.getResource("explosion.mp3").toString());
-                    AudioClip explosionFinale = new AudioClip(Main.class.getResource("explosionFinale.mp3").toString());
-                    AudioClip couler = new AudioClip(Main.class.getResource("bubble.mp3").toString());
-
-                    int move = bataille.mouvement(bataille.grilleOrdi, GridPane.getRowIndex(sp), GridPane.getColumnIndex(sp));
-                    if (move == 8) {
-                        System.out.println("Touché");
-                        //Animation rouge sur la case / Marqueur X
-
-                        fIv.relocate(400 + GridPane.getColumnIndex(sp) * 30, 40 + GridPane.getRowIndex(sp) * 30);
-                        Stages.scene1List.add(fIv);
-
-                        //Effet sonore feu
-                        explosion.play();
-                    } else if (move == 9) {
-                        System.out.println("A l'eau");
-                        //Animation Bleue avec bubble sur la case / Marqueur O
-
-                        eIv.relocate(400 + GridPane.getColumnIndex(sp) * 30, 40 + GridPane.getRowIndex(sp) * 30);
-                        Stages.scene1List.add(eIv);
-
-                        //Effet sonore bubble
-                        couler.play();
-                    } else {
-                        System.out.println("Le bateau " + move + " a été coulé!");
-                        //Effet sonore explosion diff de touché
-                        explosionFinale.play();
-
-                        fIv.relocate(400 + GridPane.getColumnIndex(sp) * 30, 40 + GridPane.getRowIndex(sp) * 30);
-                        Stages.scene1List.add(fIv);
-
-                        if (move == 1) {
-                            Stages.bateauxEnemy[4].bPane.relocate(400 + Stages.bateauxEnemy[4].getY() * 30+5, 40 + Stages.bateauxEnemy[4].getX() * 30+5);
-                            Stages.scene1List.add(Stages.bateauxEnemy[4].bPane);
-                        } else if (move == 2) {
-                            Stages.bateauxEnemy[3].bPane.relocate(400 + Stages.bateauxEnemy[3].getY() * 30+5, 40 + Stages.bateauxEnemy[3].getX() * 30+5);
-                            Stages.scene1List.add(Stages.bateauxEnemy[3].bPane);
-                        } else if (move == 3) {
-                            Stages.bateauxEnemy[2].bPane.relocate(400 + Stages.bateauxEnemy[2].getY() * 30+5, 40 + Stages.bateauxEnemy[2].getX() * 30+5);
-                            Stages.scene1List.add(Stages.bateauxEnemy[2].bPane);
-                        } else if (move == 4) {
-                            Stages.bateauxEnemy[1].bPane.relocate(400 + Stages.bateauxEnemy[1].getY() * 30+5, 40 + Stages.bateauxEnemy[1].getX() * 30+5);
-                            Stages.scene1List.add(Stages.bateauxEnemy[1].bPane);
-                        } else if (move == 5) {
-                            Stages.bateauxEnemy[0].bPane.relocate(400 + Stages.bateauxEnemy[0].getY() * 30+5, 40 + Stages.bateauxEnemy[0].getX() * 30+5);
-                            Stages.scene1List.add(Stages.bateauxEnemy[0].bPane);
-                            //sp.getChildren().add(Stages.bateauxEnemy[0].bPane);
-                        }
-
-                        bataille.AfficherGrille(bataille.grilleOrdi);
-                    }
+                    attaque(GridPane.getRowIndex(sp), GridPane.getColumnIndex(sp), true);
                 } catch (ClassCastException e) {
-
                     System.out.println("Clic sur la grille");
                 }
+                grille2.setOnMouseClicked(null);
+                attaqueOrdi();
             }
         });
+    }
+
+    /**
+     * Attaque du
+     * @param ligne numero de ligne
+     * @param colonne numero de la colonne
+     * @param joueur false si c'est l'ordi, true si c'est le joueur
+     */
+    public static void attaque(int ligne, int colonne, boolean joueur) {
+        System.out.println(ligne + " " + colonne);
+        int move;
+        int offsetX;
+        int offsetY;
+        Bateau bateau[];
+
+        ImageView feu = new ImageView(new Image(Main.class.getResourceAsStream("fire.gif")));
+        feu.setFitWidth(30);
+        feu.setFitHeight(30);
+
+        ImageView eau = new ImageView(new Image(Main.class.getResourceAsStream("water.gif")));
+        eau.setFitWidth(30);
+        eau.setFitHeight(30);
+
+        AudioClip explosion = new AudioClip(Main.class.getResource("explosion.mp3").toString());
+        AudioClip explosionFinale = new AudioClip(Main.class.getResource("explosionFinale.mp3").toString());
+        AudioClip couler = new AudioClip(Main.class.getResource("bubble.mp3").toString());
+
+        if(joueur) {
+            bateau = Stages.bateauxEnemy;
+            move = bataille.mouvement(bataille.grilleOrdi, ligne, colonne);
+            offsetX = 400;
+            offsetY = 40;
+        }
+        else {
+            bateau = Stages.bateaux;
+            move = bataille.mouvement(bataille.grilleJeu, ligne, colonne);
+            offsetX = 20;
+            offsetY = 40;
+        }
+
+        if (move == 8) {
+            System.out.println("Touché");
+            //Animation rouge sur la case / Marqueur X
+
+            feu.relocate(offsetX + colonne * 30, offsetY + ligne * 30);
+            Stages.scene1List.add(feu);
+
+            //Effet sonore explosion
+            explosion.play();
+        } else if (move == 9) {
+            System.out.println("A l'eau");
+            //Animation Bleue avec bubble sur la case / Marqueur O
+
+            eau.relocate(offsetX + colonne * 30, offsetY + ligne * 30);
+            Stages.scene1List.add(eau);
+
+            //Effet sonore bubble
+            couler.play();
+        } else {
+            System.out.println("Le bateau " + move + " a été coulé!");
+            //Effet sonore explosion diff de touché
+            explosionFinale.play();
+
+            feu.relocate(offsetX + colonne * 30, offsetY + ligne * 30);
+            Stages.scene1List.add(feu);
+
+            if (move == 1) {
+                bateau[4].bPane.relocate(offsetX+ bateau[4].getY() * 30+5, offsetY+ bateau[4].getX() * 30+5);
+                Stages.scene1List.add(bateau[4].bPane);
+            } else if (move == 2) {
+                bateau[3].bPane.relocate(offsetX+ bateau[3].getY() * 30+5, offsetY+ bateau[3].getX() * 30+5);
+                Stages.scene1List.add(bateau[3].bPane);
+            } else if (move == 3) {
+                bateau[2].bPane.relocate(offsetX+ bateau[2].getY() * 30+5, offsetY+ bateau[2].getX() * 30+5);
+                Stages.scene1List.add(bateau[2].bPane);
+            } else if (move == 4) {
+                bateau[1].bPane.relocate(offsetX+ bateau[1].getY() * 30+5, offsetY+ bateau[1].getX() * 30+5);
+                Stages.scene1List.add(bateau[1].bPane);
+            } else if (move == 5) {
+                bateau[0].bPane.relocate(offsetX+ bateau[0].getY() * 30+5, offsetY+ bateau[0].getX() * 30+5);
+                Stages.scene1List.add(bateau[0].bPane);
+            }
+
+            if(joueur) {
+                bataille.AfficherGrille(bataille.grilleJeu);
+                if (bataille.vainqueur(bataille.grilleOrdi))
+                    Stages.stageVictoire();
+            }
+            else {
+                bataille.AfficherGrille(bataille.grilleOrdi);
+                if (bataille.vainqueur(bataille.grilleJeu))
+                    Stages.stageDefaite();
+            }
+        }
+    }
+
+    /**
+     * Attaque de l'ordinateur
+     */
+    public static void attaqueOrdi(){
+        int[] tir = bataille.tirOrdinateur();
+        attaque(tir[0], tir[1], false);
+        clickEvent();
     }
 
     /**

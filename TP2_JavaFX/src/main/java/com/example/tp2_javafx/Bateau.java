@@ -6,7 +6,7 @@ import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
 
 public class Bateau {
-    private int type;
+    private final int type;
     private int direction;
     private int Xpos = 100;
     private int Ypos = 100;
@@ -28,7 +28,10 @@ public class Bateau {
      */
 
     Bateau(int t, int x, int y, Image img){
+        type = t;
+        direction = 1;
 
+        //Definit les paramètres du bateau en fonction de son type
         if (t == 5) {
             offset = -16;
             imageSize = 53;
@@ -46,9 +49,6 @@ public class Bateau {
             imageSize = 140;
         }
 
-        type = t;
-        direction = 1;
-
         bPane.relocate(x, y);
         bPane.setMaxWidth(20);
         bPane.setMaxHeight(20);
@@ -59,13 +59,11 @@ public class Bateau {
         iv.setFitWidth(imageSize);
         iv.setFitHeight(20);
 
-        //bPane.setStyle("-fx-background-color: red;"); //DEBUG
-
         bPane.getChildren().add(iv);
     }
 
     /**
-     * Active l'évènement drag and drop sur le bateau
+     * Active l'evenement drag and drop sur le bateau
      */
     public void drag(){
         bPane.setOnDragDetected(event -> {
@@ -75,6 +73,7 @@ public class Bateau {
 
             content.put(Grille.dragFormat, " ");
             db.setContent(content);
+
 
             Grille.bateau = this;
             Grille.draggingPane = bPane;
@@ -87,8 +86,7 @@ public class Bateau {
      */
 
     public void tournerEvent() {
-        Image tourn = new Image(Main.class.getResourceAsStream("rotate.png"));
-        tournerIv.setImage(tourn);
+        tournerIv.setImage(new Image(Main.class.getResourceAsStream("rotate.png")));
         tournPane.relocate(-3, -3);
         tournerIv.setFitWidth(20);
         tournerIv.setFitHeight(20);
