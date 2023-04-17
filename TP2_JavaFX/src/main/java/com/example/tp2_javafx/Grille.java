@@ -40,8 +40,8 @@ public class Grille {
             int[][] grilleTest = new int[10][10];
             for (Bateau bateau : Stages.bateaux) {
 
-                if (bateau.getX() != 100 && bataille.posOk(grilleTest, bateau.getX(), bateau.getY(), bateau.getDir(), bateau.getType()))
-                    bataille.ajoutBateau(grilleTest, bateau.getX(), bateau.getY(), bateau.getDir(), bateau.getType());
+                if (bateau.getX() != 100 && Bataille.posOk(grilleTest, bateau.getX(), bateau.getY(), bateau.getDir(), bateau.getType()))
+                    Bataille.ajoutBateau(grilleTest, bateau.getX(), bateau.getY(), bateau.getDir(), bateau.getType());
                 else {
                     System.out.println("1");
                     ok = false;
@@ -50,7 +50,7 @@ public class Grille {
 
             if(ok) {
                 for (Bateau bateau : Stages.bateaux) {
-                    bataille.ajoutBateau(bataille.grilleJeu, bateau.getX(), bateau.getY(), bateau.getDir(), bateau.getType());
+                    Bataille.ajoutBateau(Bataille.grilleJeu, bateau.getX(), bateau.getY(), bateau.getDir(), bateau.getType());
                 }
                 Stages.stageJeu();
             }
@@ -69,7 +69,7 @@ public class Grille {
             Node node = (Node) e.getTarget();
 
             if(GridPane.getRowIndex(node) != null && GridPane.getColumnIndex(node) != null)
-                if(bataille.posOk(bataille.grilleJeu,GridPane.getRowIndex(node),GridPane.getColumnIndex(node),bateau.getDir(),bateau.getType())) {
+                if(Bataille.posOk(Bataille.grilleJeu,GridPane.getRowIndex(node),GridPane.getColumnIndex(node),bateau.getDir(),bateau.getType())) {
                     e.acceptTransferModes(TransferMode.MOVE);
                     e.consume();
                 }
@@ -156,11 +156,11 @@ public class Grille {
      */
     public static void remplirEnemy(GridPane grid){
         int[][] tot = {
-                bataille.initGrilleOrdi(5),
-                bataille.initGrilleOrdi(4),
-                bataille.initGrilleOrdi(3),
-                bataille.initGrilleOrdi(2),
-                bataille.initGrilleOrdi(1)};
+                Bataille.initGrilleOrdi(5),
+                Bataille.initGrilleOrdi(4),
+                Bataille.initGrilleOrdi(3),
+                Bataille.initGrilleOrdi(2),
+                Bataille.initGrilleOrdi(1)};
 
         for (int n = 0; n < 10; n++) {
             for (int i = 0; i < 10; i++) {
@@ -231,13 +231,13 @@ public class Grille {
 
         if(joueur) {
             bateau = Stages.bateauxEnemy;
-            move = bataille.mouvement(bataille.grilleOrdi, ligne, colonne);
+            move = Bataille.mouvement(Bataille.grilleOrdi, ligne, colonne);
             offsetX = 400;
             offsetY = 40;
         }
         else {
             bateau = Stages.bateaux;
-            move = bataille.mouvement(bataille.grilleJeu, ligne, colonne);
+            move = Bataille.mouvement(Bataille.grilleJeu, ligne, colonne);
             offsetX = 20;
             offsetY = 40;
         }
@@ -286,13 +286,13 @@ public class Grille {
             }
 
             if(joueur) {
-                bataille.AfficherGrille(bataille.grilleJeu);
-                if (bataille.vainqueur(bataille.grilleOrdi))
+                Bataille.AfficherGrille(Bataille.grilleJeu);
+                if (Bataille.vainqueur(Bataille.grilleOrdi))
                     Stages.stageVictoire();
             }
             else {
-                bataille.AfficherGrille(bataille.grilleOrdi);
-                if (bataille.vainqueur(bataille.grilleJeu))
+                Bataille.AfficherGrille(Bataille.grilleOrdi);
+                if (Bataille.vainqueur(Bataille.grilleJeu))
                     Stages.stageDefaite();
             }
         }
@@ -302,7 +302,7 @@ public class Grille {
      * Attaque de l'ordinateur
      */
     public static void attaqueOrdi(){
-        int[] tir = bataille.tirOrdinateur();
+        int[] tir = Bataille.tirOrdinateur();
         attaque(tir[0], tir[1], false);
         clickEvent();
     }

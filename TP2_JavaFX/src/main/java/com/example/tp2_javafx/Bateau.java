@@ -105,11 +105,11 @@ public class Bateau {
      */
     public void tourner(){
         if (iv.getRotate() == 0) {
-            if (bataille.posOk(bataille.grilleJeu, Xpos, Ypos, 2, type)) {
+            if (Bataille.posOk(Bataille.grilleJeu, Xpos, Ypos, 2, type)) {
                 tournerVer();
             }
         } else {
-            if (bataille.posOk(bataille.grilleJeu, Xpos, Ypos, 1, type)) {
+            if (Bataille.posOk(Bataille.grilleJeu, Xpos, Ypos, 1, type)) {
                 tournerHor();
             }
         }
