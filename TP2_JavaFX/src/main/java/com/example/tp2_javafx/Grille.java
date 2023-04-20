@@ -3,6 +3,7 @@ package com.example.tp2_javafx;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DataFormat;
@@ -16,13 +17,18 @@ public class Grille {
     static final DataFormat dragFormat = new DataFormat("MyButton");
     public static Pane draggingPane;
     public static Bateau bateau;
-    public static GridPane grille = new GridPane();
-    public static GridPane grille2 = new GridPane();
-    public static Button btn = new Button();
+    public static GridPane grille;
+    public static GridPane grille2;
+    public static Button btn;
 
     /**
      * Valide le placement des bateaux avec un bouton
      */
+    public static void init(){
+       grille = new GridPane();
+       grille2 = new GridPane();
+       btn = new Button();
+    }
     public static void validerPlacement(){
         btn.relocate(355,40);
         btn.setText("Valider");
@@ -43,7 +49,6 @@ public class Grille {
                 if (bateau.getX() != 100 && Bataille.posOk(grilleTest, bateau.getX(), bateau.getY(), bateau.getDir(), bateau.getType()))
                     Bataille.ajoutBateau(grilleTest, bateau.getX(), bateau.getY(), bateau.getDir(), bateau.getType());
                 else {
-                    System.out.println("1");
                     ok = false;
                 }
             }
@@ -98,6 +103,12 @@ public class Grille {
      */
     public static void creerG1() {
         arrierePlanG1();
+        Label titre = new Label();
+        titre.setText("Grille du joueur");
+        titre.relocate(120, 350);
+        Stages.scene1List.add(titre);
+
+
         remplir(grille);
 
         grille.setGridLinesVisible(true);
@@ -117,6 +128,12 @@ public class Grille {
      */
     public static void creerG2() {
         arrierePlanG2();
+
+        Label titre = new Label();
+        titre.setText("Grille de l'ordinateur");
+        titre.relocate(490, 350);
+        Stages.scene1List.add(titre);
+
         remplirEnemy(grille2);
 
         grille2.setGridLinesVisible(true);
@@ -129,6 +146,12 @@ public class Grille {
         grille2.getRowConstraints().addAll(new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize),new RowConstraints(rowSize,rowSize,rowSize));
 
         Stages.scene1List.add(grille2);
+
+        ImageView canon = new ImageView(new Image(Main.class.getResourceAsStream("canon.jpg")));
+        canon.setFitWidth(50);
+        canon.setFitHeight(50);
+        canon.relocate(530, 330);
+        Stages.scene1List.add(canon);
     }
 
     /**
@@ -195,9 +218,9 @@ public class Grille {
                     StackPane sp = (StackPane) event.getTarget();
 
                     attaque(GridPane.getRowIndex(sp), GridPane.getColumnIndex(sp), true);
-                } catch (ClassCastException e) {
-                    System.out.println("Clic sur la grille");
-                }
+
+                    //animation(GridPane.getRowIndex(sp), GridPane.getColumnIndex(sp), true);
+                } catch (ClassCastException ignored) {}
                 grille2.setOnMouseClicked(null);
                 attaqueOrdi();
             }
@@ -209,6 +232,7 @@ public class Grille {
      * @param ligne numero de ligne
      * @param colonne numero de la colonne
      * @param joueur false si c'est l'ordi, true si c'est le joueur
+     * @throws IllegalArgumentException Exception si le mode triche est activé
      */
     public static void attaque(int ligne, int colonne, boolean joueur) {
         System.out.println(ligne + " " + colonne);
@@ -268,30 +292,30 @@ public class Grille {
             feu.relocate(offsetX + colonne * 30, offsetY + ligne * 30);
             Stages.scene1List.add(feu);
 
-            if (move == 1) {
-                bateau[4].bPane.relocate(offsetX+ bateau[4].getY() * 30+5, offsetY+ bateau[4].getX() * 30+5);
-                Stages.scene1List.add(bateau[4].bPane);
-            } else if (move == 2) {
-                bateau[3].bPane.relocate(offsetX+ bateau[3].getY() * 30+5, offsetY+ bateau[3].getX() * 30+5);
-                Stages.scene1List.add(bateau[3].bPane);
-            } else if (move == 3) {
-                bateau[2].bPane.relocate(offsetX+ bateau[2].getY() * 30+5, offsetY+ bateau[2].getX() * 30+5);
-                Stages.scene1List.add(bateau[2].bPane);
-            } else if (move == 4) {
-                bateau[1].bPane.relocate(offsetX+ bateau[1].getY() * 30+5, offsetY+ bateau[1].getX() * 30+5);
-                Stages.scene1List.add(bateau[1].bPane);
-            } else if (move == 5) {
-                bateau[0].bPane.relocate(offsetX+ bateau[0].getY() * 30+5, offsetY+ bateau[0].getX() * 30+5);
-                Stages.scene1List.add(bateau[0].bPane);
-            }
+            try {
+                if (move == 1) {
+                    bateau[4].bPane.relocate(offsetX + bateau[4].getY() * 30 + 5, offsetY + bateau[4].getX() * 30 + 5);
+                    Stages.scene1List.add(bateau[4].bPane);
+                } else if (move == 2) {
+                    bateau[3].bPane.relocate(offsetX + bateau[3].getY() * 30 + 5, offsetY + bateau[3].getX() * 30 + 5);
+                    Stages.scene1List.add(bateau[3].bPane);
+                } else if (move == 3) {
+                    bateau[2].bPane.relocate(offsetX + bateau[2].getY() * 30 + 5, offsetY + bateau[2].getX() * 30 + 5);
+                    Stages.scene1List.add(bateau[2].bPane);
+                } else if (move == 4) {
+                    bateau[1].bPane.relocate(offsetX + bateau[1].getY() * 30 + 5, offsetY + bateau[1].getX() * 30 + 5);
+                    Stages.scene1List.add(bateau[1].bPane);
+                } else if (move == 5) {
+                    bateau[0].bPane.relocate(offsetX + bateau[0].getY() * 30 + 5, offsetY + bateau[0].getX() * 30 + 5);
+                    Stages.scene1List.add(bateau[0].bPane);
+                }
+            }catch (IllegalArgumentException ignored){}
 
             if(joueur) {
-                Bataille.AfficherGrille(Bataille.grilleJeu);
                 if (Bataille.vainqueur(Bataille.grilleOrdi))
                     Stages.stageVictoire();
             }
             else {
-                Bataille.AfficherGrille(Bataille.grilleOrdi);
                 if (Bataille.vainqueur(Bataille.grilleJeu))
                     Stages.stageDefaite();
             }
@@ -334,4 +358,37 @@ public class Grille {
 
         Stages.scene1List.add(ap);
     }
+
+    /*
+    public static void animation(int ligne, int colonne, boolean joueur){
+        ImageView boulet = new ImageView(new Image(Main.class.getResourceAsStream("boulet.png")));
+
+        boulet.relocate(540, 330);
+        colonne = 400 + colonne * 30 + 5;
+        ligne = 40 + ligne* 30 + 5;
+
+        boulet.setFitWidth(30);
+        boulet.setFitHeight(30);
+
+        System.out.println("Fiiiii = "+  ligne + " " + colonne);
+
+        TranslateTransition transition = new TranslateTransition(Duration.seconds(2), boulet);
+        transition.setToX(-400);
+        transition.setToY(-200);
+
+
+     //   int finalColonne = colonne;
+     //   int finalLigne = ligne;
+     //   Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), new EventHandler<ActionEvent>() {
+     //       @Override
+     //       public void handle(ActionEvent event) {
+     //           boulet.relocate(boulet.getLayoutX()+ finalLigne, boulet.getLayoutY()-finalColonne);
+     //       }
+     //   }));
+     //   timeline.setCycleCount(Timeline.INDEFINITE);
+
+        transition.play();
+        Stages.scene1List.add(boulet);
+    }
+     */
 }
