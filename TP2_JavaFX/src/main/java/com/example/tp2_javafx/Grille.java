@@ -129,6 +129,14 @@ public class Grille {
     public static void creerG2() {
         arrierePlanG2();
 
+        /*
+        ImageView canon = new ImageView(new Image(Main.class.getResourceAsStream("canon.jpg")));
+        canon.setFitWidth(50);
+        canon.setFitHeight(50);
+        canon.relocate(530, 330);
+        Stages.scene1List.add(canon);
+        */
+
         Label titre = new Label();
         titre.setText("Grille de l'ordinateur");
         titre.relocate(490, 350);
@@ -147,11 +155,6 @@ public class Grille {
 
         Stages.scene1List.add(grille2);
 
-        ImageView canon = new ImageView(new Image(Main.class.getResourceAsStream("canon.jpg")));
-        canon.setFitWidth(50);
-        canon.setFitHeight(50);
-        canon.relocate(530, 330);
-        Stages.scene1List.add(canon);
     }
 
     /**
