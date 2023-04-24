@@ -1,5 +1,8 @@
 package com.example.tp2_javafx;
 
+import javafx.animation.*;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -12,6 +15,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 import javafx.scene.media.AudioClip;
+import javafx.util.Duration;
 
 public class Grille {
     static final DataFormat dragFormat = new DataFormat("MyButton");
@@ -129,14 +133,6 @@ public class Grille {
     public static void creerG2() {
         arrierePlanG2();
 
-        /*
-        ImageView canon = new ImageView(new Image(Main.class.getResourceAsStream("canon.jpg")));
-        canon.setFitWidth(50);
-        canon.setFitHeight(50);
-        canon.relocate(530, 330);
-        Stages.scene1List.add(canon);
-        */
-
         Label titre = new Label();
         titre.setText("Grille de l'ordinateur");
         titre.relocate(490, 350);
@@ -222,7 +218,6 @@ public class Grille {
 
                     attaque(GridPane.getRowIndex(sp), GridPane.getColumnIndex(sp), true);
 
-                    //animation(GridPane.getRowIndex(sp), GridPane.getColumnIndex(sp), true);
                 } catch (ClassCastException ignored) {}
                 grille2.setOnMouseClicked(null);
                 attaqueOrdi();
@@ -298,18 +293,38 @@ public class Grille {
             try {
                 if (move == 1) {
                     bateau[4].bPane.relocate(offsetX + bateau[4].getY() * 30 + 5, offsetY + bateau[4].getX() * 30 + 5);
+                    FadeTransition ft = new FadeTransition(Duration.millis(1000), bateau[4].bPane);
+                    ft.setFromValue(0);
+                    ft.setToValue(1);
+                    ft.play();
                     Stages.scene1List.add(bateau[4].bPane);
                 } else if (move == 2) {
                     bateau[3].bPane.relocate(offsetX + bateau[3].getY() * 30 + 5, offsetY + bateau[3].getX() * 30 + 5);
+                    FadeTransition ft = new FadeTransition(Duration.millis(1000), bateau[3].bPane);
+                    ft.setFromValue(0);
+                    ft.setToValue(1);
+                    ft.play();
                     Stages.scene1List.add(bateau[3].bPane);
                 } else if (move == 3) {
                     bateau[2].bPane.relocate(offsetX + bateau[2].getY() * 30 + 5, offsetY + bateau[2].getX() * 30 + 5);
+                    FadeTransition ft = new FadeTransition(Duration.millis(1000), bateau[2].bPane);
+                    ft.setFromValue(0);
+                    ft.setToValue(1);
+                    ft.play();
                     Stages.scene1List.add(bateau[2].bPane);
                 } else if (move == 4) {
                     bateau[1].bPane.relocate(offsetX + bateau[1].getY() * 30 + 5, offsetY + bateau[1].getX() * 30 + 5);
+                    FadeTransition ft = new FadeTransition(Duration.millis(1000), bateau[1].bPane);
+                    ft.setFromValue(0);
+                    ft.setToValue(1);
+                    ft.play();
                     Stages.scene1List.add(bateau[1].bPane);
                 } else if (move == 5) {
                     bateau[0].bPane.relocate(offsetX + bateau[0].getY() * 30 + 5, offsetY + bateau[0].getX() * 30 + 5);
+                    FadeTransition ft = new FadeTransition(Duration.millis(1000), bateau[0].bPane);
+                    ft.setFromValue(0);
+                    ft.setToValue(1);
+                    ft.play();
                     Stages.scene1List.add(bateau[0].bPane);
                 }
             }catch (IllegalArgumentException ignored){}
@@ -362,36 +377,4 @@ public class Grille {
         Stages.scene1List.add(ap);
     }
 
-    /*
-    public static void animation(int ligne, int colonne, boolean joueur){
-        ImageView boulet = new ImageView(new Image(Main.class.getResourceAsStream("boulet.png")));
-
-        boulet.relocate(540, 330);
-        colonne = 400 + colonne * 30 + 5;
-        ligne = 40 + ligne* 30 + 5;
-
-        boulet.setFitWidth(30);
-        boulet.setFitHeight(30);
-
-        System.out.println("Fiiiii = "+  ligne + " " + colonne);
-
-        TranslateTransition transition = new TranslateTransition(Duration.seconds(2), boulet);
-        transition.setToX(-400);
-        transition.setToY(-200);
-
-
-     //   int finalColonne = colonne;
-     //   int finalLigne = ligne;
-     //   Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), new EventHandler<ActionEvent>() {
-     //       @Override
-     //       public void handle(ActionEvent event) {
-     //           boulet.relocate(boulet.getLayoutX()+ finalLigne, boulet.getLayoutY()-finalColonne);
-     //       }
-     //   }));
-     //   timeline.setCycleCount(Timeline.INDEFINITE);
-
-        transition.play();
-        Stages.scene1List.add(boulet);
-    }
-     */
 }

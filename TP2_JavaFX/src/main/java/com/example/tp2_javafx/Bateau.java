@@ -1,5 +1,6 @@
 package com.example.tp2_javafx;
 
+import javafx.animation.RotateTransition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
@@ -119,6 +120,11 @@ public class Bateau {
      * Tourne le bateau en vertical
      */
     public void tournerVer(){
+        RotateTransition rotate = new RotateTransition();
+        rotate.setByAngle(90);
+        rotate.setNode(iv);
+        rotate.play();
+
         iv.relocate(offset, -offset);
         iv.setRotate(90);
         direction = 2;
@@ -128,6 +134,11 @@ public class Bateau {
      * Tourne le bateau à l'horizontal
      */
     public void tournerHor(){
+        RotateTransition rotate = new RotateTransition();
+        rotate.setByAngle(-90);
+        rotate.setNode(iv);
+        rotate.play();
+
         iv.relocate(0, 0);
         iv.setRotate(0);
         direction = 1;
