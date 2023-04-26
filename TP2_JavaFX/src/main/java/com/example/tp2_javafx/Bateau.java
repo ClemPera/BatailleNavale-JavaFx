@@ -85,7 +85,6 @@ public class Bateau {
     /**
      * Active l'évènement de rotation du bateau
      */
-
     public void tournerEvent() {
         tournerIv.setImage(new Image(Main.class.getResourceAsStream("rotate.png")));
         tournPane.relocate(-3, -3);
@@ -105,7 +104,7 @@ public class Bateau {
      * Tourne le bateau
      */
     public void tourner(){
-        if (iv.getRotate() == 0) {
+        if (iv.getRotate() != 90) {
             if (Bataille.posOk(Bataille.grilleJeu, Xpos, Ypos, 2, type)) {
                 tournerVer();
             }

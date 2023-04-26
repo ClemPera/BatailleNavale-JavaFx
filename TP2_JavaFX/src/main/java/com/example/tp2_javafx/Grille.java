@@ -15,6 +15,8 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
 public class Grille {
@@ -247,9 +249,9 @@ public class Grille {
         eau.setFitWidth(30);
         eau.setFitHeight(30);
 
-        AudioClip explosion = new AudioClip(Main.class.getResource("explosion.mp3").toString());
-        AudioClip explosionFinale = new AudioClip(Main.class.getResource("explosionFinale.mp3").toString());
-        AudioClip couler = new AudioClip(Main.class.getResource("bubble.mp3").toString());
+        MediaPlayer explosion = new MediaPlayer(new Media(Main.class.getResource("explosion.mp3").toString()));
+        MediaPlayer explosionFinale = new MediaPlayer(new Media(Main.class.getResource("explosionFinale.mp3").toString()));
+        MediaPlayer couler = new MediaPlayer(new Media(Main.class.getResource("bubble.mp3").toString()));
 
         if(joueur) {
             bateau = Stages.bateauxEnemy;
@@ -272,7 +274,8 @@ public class Grille {
             Stages.scene1List.add(feu);
 
             //Effet sonore explosion
-            explosion.play();
+            if(joueur)
+                explosion.play();
         } else if (move == 9) {
             System.out.println("A l'eau");
             //Animation Bleue avec bubble sur la case / Marqueur O
@@ -281,11 +284,13 @@ public class Grille {
             Stages.scene1List.add(eau);
 
             //Effet sonore bubble
-            couler.play();
+            if(joueur)
+                couler.play();
         } else {
             System.out.println("Le bateau " + move + " a été coulé!");
             //Effet sonore explosion diff de touché
-            explosionFinale.play();
+            if(joueur)
+                explosionFinale.play();
 
             feu.relocate(offsetX + colonne * 30, offsetY + ligne * 30);
             Stages.scene1List.add(feu);
